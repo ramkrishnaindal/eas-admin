@@ -2,7 +2,7 @@
   "name": "csv-reader",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://ramkrishnaindal.github.io/react-gh-pages",
+  "homepage": "https://ramkrishnaindal.github.io/eas-admin",
   "dependencies": {
     "@testing-library/jest-dom": "^5.15.1",
     "@testing-library/react": "^11.2.7",
@@ -11,6 +11,7 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "^4.0.3",
+    "react-tag-autocomplete": "^6.3.0",
     "reactstrap": "^9.0.1",
     "read-excel-file": "^5.2.25",
     "web-vitals": "^1.1.2"

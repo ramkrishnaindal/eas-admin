@@ -6,7 +6,14 @@
   height: 40vmin;
   pointer-events: none;
 }
-
+.question-header {
+  background-color: rgb(144, 158, 218);
+  color: cornsilk;
+}
+.question-first-col {
+  background-color: rgb(144, 158, 218) !important;
+  color: cornsilk !important;
+}
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
