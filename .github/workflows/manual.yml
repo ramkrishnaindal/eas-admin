@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 on:
    push:
    branches:
-     -main
+      -main
 jobs:
    build - and - deploy:
    runs - on: ubuntu - latest
@@ -10,8 +10,7 @@ steps:
    -name: Checkout
 uses: actions / checkout @v1
 
-   -
-   name: Build
+   -name: Build
 run: |
    npm install
 npm run - script build
