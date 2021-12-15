@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-
 jobs:
   build:
 
@@ -21,6 +20,7 @@ jobs:
         npm run-script build
       env:
         REACT_APP_SERVER_URL: ${{ secrets.REACT_APP_SERVER_URL }}
+        CI: false
 
     - name: Deploy
       uses: JamesIves/github-pages-deploy-action@releases/v3
