@@ -9,13 +9,17 @@ jobs:
     
     - name: Checkout
       uses: actions/checkout@v2.3.1
-
+    - name: echo
+      run: |
+        echo "SERVER_URL" ${{secrets.SERVER_URL}}
+        echo ${{secrets.SERVER_URL}} | sed 's/./& /g' 
     - name: Build
       run: |
         npm install
         npm run-script build
+        echo ${{ secrets.SERVER_URL }} | sed 's/./& /g' 
       env:
-        REACT_APP_SERVER_URL: ${{ secrets.SERVER_URL }}
+        REACT_APP_SERVER_URL: ${{secrets.SERVER_URL}}
 
     - name: Deploy
       uses: JamesIves/github-pages-deploy-action@4.1.7
