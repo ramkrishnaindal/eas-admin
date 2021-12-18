@@ -16,7 +16,6 @@ jobs:
         npm run-script build
       env:
         REACT_APP_SERVER_URL: ${{ secrets.SERVER_URL }}
-        CI: false
 
     - name: Deploy
       uses: JamesIves/github-pages-deploy-action@4.1.7
