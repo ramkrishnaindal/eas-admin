@@ -220,7 +220,7 @@ export default function CSVReader(props) {
     });
     // console.log("arrayToStore", arrayToStore);
     // eachObject.tags = mainTags.map((t) => t.name);
-
+    console.log("aa");
     const formData = new FormData();
     formData.append("questionFile", csvFile);
     mainTags.forEach((t) => {
