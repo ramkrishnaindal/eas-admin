@@ -16,7 +16,7 @@ export default function CSVReader(props) {
   const [csvFile, setCsvFile] = useState();
   const [headers, setHeaders] = useState([]);
   const [csvArray, setCsvArray] = useState([]);
-  const [options, setOptions] = useState([]);
+  // const [options, setOptions] = useState([]);
   const [tagsList, setTagsList] = useState([]);
   const [tags, setTags] = useState();
   const [mainTags, setMainTags] = useState();
@@ -33,7 +33,7 @@ export default function CSVReader(props) {
         opt.push(el.toLowerCase().replace("option ", "").toLowerCase());
       }
     });
-    setOptions(opt);
+    // setOptions(opt);
     processCSV(rows[0], rows.slice(1));
   };
   const onDelete = useCallback(
@@ -66,15 +66,15 @@ export default function CSVReader(props) {
       prevTags[i] = [...prevTags[i], newTag];
       setTags(prevTags);
     },
-    [tags]
+    [tags, tagsList]
   );
   const onDeleteMain = useCallback(
     (tagIndex) => {
-      const prevTags = mainTags ? [...mainTags] : [];
+      let prevTags = mainTags ? [...mainTags] : [];
       prevTags = prevTags.filter((_, i) => i !== tagIndex);
       setMainTags(prevTags);
     },
-    [tags]
+    [mainTags]
   );
 
   const onAdditionMain = useCallback(
@@ -96,7 +96,7 @@ export default function CSVReader(props) {
       prevTags = [...prevTags, newTag];
       setMainTags(prevTags);
     },
-    [mainTags]
+    [mainTags, tagsList]
   );
   const processCSV = (hdrs, rows) => {
     const newArray = rows.map((row) => {
@@ -131,7 +131,7 @@ export default function CSVReader(props) {
     });
     setCsvArray(newArray);
     const tagsArr = {};
-    newArray.map((item, index) => {
+    newArray.forEach((item, index) => {
       if (item && item.Tags) {
         const tagsArray = item.Tags.map((it, i) => {
           return { id: i, name: it };
@@ -161,10 +161,10 @@ export default function CSVReader(props) {
     const {
       "Cert related": certRelated,
       Domain,
-      "File name": fileName,
-      "Module (specific)": moduleSpecific,
-      "No of Questions?": noOfQuestions,
-      Nos,
+      // "File name": fileName,
+      // "Module (specific)": moduleSpecific,
+      // "No of Questions?": noOfQuestions,
+      // Nos,
       Product,
       "Product specific": productSpecific,
       "Question Mode": questionMode,
@@ -206,7 +206,6 @@ export default function CSVReader(props) {
       qnsToSave.sourceType = sourceType;
       qnsToSave.comments = comments;
       const optionsWithAnswers = [];
-      debugger;
       questionAnswers.forEach((qnsAns) => {
         if (`Option ${qnsAns.option}` in qnsToSave) {
           optionsWithAnswers.push({
@@ -220,7 +219,7 @@ export default function CSVReader(props) {
     });
     // console.log("arrayToStore", arrayToStore);
     // eachObject.tags = mainTags.map((t) => t.name);
-    console.log("aa");
+
     const formData = new FormData();
     formData.append("questionFile", csvFile);
     mainTags.forEach((t) => {
