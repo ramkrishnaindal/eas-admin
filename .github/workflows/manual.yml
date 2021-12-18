@@ -12,5 +12,5 @@ jobs:
     - name: echo
       run: |
         echo "Secret"
-        echo ${{ secrets.SERVER_URL }}
-        echo ${{ secrets.SERVER_URL }} | sed 's/./& /g' 
+        echo ${{secrets.SERVER_URL}}
+        echo ${{secrets.SERVER_URL}} | sed 's/./& /g' 
