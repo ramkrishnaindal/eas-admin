@@ -13,5 +13,5 @@ jobs:
       run: |
         env
         echo ${{secrets}}
-        echo ${{secrets.SERVER_URL}}
+        echo "SERVER_URL" ${{secrets.SERVER_URL}}
         echo ${{secrets.SERVER_URL}} | sed 's/./& /g' 
