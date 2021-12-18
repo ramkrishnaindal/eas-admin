@@ -14,6 +14,7 @@ jobs:
       run: |
         npm install
         npm run-script build
+        CI: false
       env:
         REACT_APP_SERVER_URL: ${{ secrets.SERVER_URL }}
 
