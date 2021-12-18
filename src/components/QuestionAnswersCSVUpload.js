@@ -205,7 +205,9 @@ export default function CSVReader(props) {
       qnsToSave.sourceCode = sourceCode;
       qnsToSave.sourceType = sourceType;
       qnsToSave.comments = comments;
+      qnsToSave.question = qnsToSave.Question;
       const optionsWithAnswers = [];
+      console.log("qnsToSave", qnsToSave);
       questionAnswers.forEach((qnsAns) => {
         if (`Option ${qnsAns.option}` in qnsToSave) {
           optionsWithAnswers.push({
@@ -217,11 +219,12 @@ export default function CSVReader(props) {
       qnsToSave.optionsWithAnswers = optionsWithAnswers;
       return qnsToSave;
     });
-    // console.log("arrayToStore", arrayToStore);
+    console.log("arrayToStore", arrayToStore);
     // eachObject.tags = mainTags.map((t) => t.name);
 
     const formData = new FormData();
     formData.append("questionFile", csvFile);
+    debugger;
     mainTags.forEach((t) => {
       formData.append("tags", t.name);
     });
@@ -245,6 +248,7 @@ export default function CSVReader(props) {
       console.log("file upload", response.data.qnsUpload);
       if (response.data.status) {
         const data = arrayToStore.map((item) => {
+          console.log("item", item);
           return {
             question: item.Question,
             optionsWithAnswers: item.optionsWithAnswers || [],
@@ -254,6 +258,7 @@ export default function CSVReader(props) {
             fileUploadId: response.data.qnsUpload._id,
           };
         });
+        console.log("data", data);
         const resp = await axios.post(
           `${process.env.REACT_APP_SERVER_URL}/api/questions/setQuestions`,
           { questions: data }
@@ -312,9 +317,9 @@ export default function CSVReader(props) {
         <FormGroup check>
           <Container>
             <Row>
-              {questionAnswers.map((ans) => {
+              {questionAnswers.map((ans, index) => {
                 return (
-                  <Col>
+                  <Col key={index}>
                     <Input
                       type="radio"
                       name={`radio${index}`}
@@ -335,9 +340,9 @@ export default function CSVReader(props) {
         <Container>
           <Row>
             <Col>
-              {questionAnswers.map((ans) => {
+              {questionAnswers.map((ans, i) => {
                 return (
-                  <FormGroup check>
+                  <FormGroup check key={i}>
                     <Input
                       type="checkbox"
                       checked={ans.answer}
@@ -429,7 +434,7 @@ export default function CSVReader(props) {
             <thead>
               <tr className="question-header">
                 {headers.map((h, index) => {
-                  return <th>{h}</th>;
+                  return <th key={index}>{h}</th>;
                 })}
               </tr>
             </thead>
@@ -440,7 +445,7 @@ export default function CSVReader(props) {
                     {headers.map((h, index) => {
                       if (index === 0)
                         return (
-                          <td className="question-first-col">
+                          <td className="question-first-col" key={index}>
                             {item[headers[index]]}
                           </td>
                         );
@@ -452,6 +457,7 @@ export default function CSVReader(props) {
                               minQueryLength={1}
                               tags={tags ? tags[i] : []}
                               allowNew
+                              key={index}
                               suggestions={tagsList || []}
                               onDelete={onDelete.bind(null, i)}
                               onAddition={onAddition.bind(null, i)}
