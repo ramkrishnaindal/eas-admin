@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/eas-admin/static/css/main.e65c03f3.chunk.css",
-    "main.js": "/eas-admin/static/js/main.f0848a6c.chunk.js",
-    "main.js.map": "/eas-admin/static/js/main.f0848a6c.chunk.js.map",
+    "main.js": "/eas-admin/static/js/main.08ead901.chunk.js",
+    "main.js.map": "/eas-admin/static/js/main.08ead901.chunk.js.map",
     "runtime-main.js": "/eas-admin/static/js/runtime-main.b9212dce.js",
     "runtime-main.js.map": "/eas-admin/static/js/runtime-main.b9212dce.js.map",
     "static/css/2.8c0e6b67.chunk.css": "/eas-admin/static/css/2.8c0e6b67.chunk.css",
@@ -18,6 +18,6 @@
     "static/css/2.8c0e6b67.chunk.css",
     "static/js/2.5377abf3.chunk.js",
     "static/css/main.e65c03f3.chunk.css",
-    "static/js/main.f0848a6c.chunk.js"
+    "static/js/main.08ead901.chunk.js"
   ]
 }
