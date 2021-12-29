@@ -169,6 +169,7 @@ export default function CSVReader(props) {
       "Product specific": productSpecific,
       "Question Mode": questionMode,
       "Question Type": questionType,
+      Type: type,
       "Skill Level": skillLevel,
       "Source code": sourceCode,
       "Source type": sourceType,
@@ -186,6 +187,7 @@ export default function CSVReader(props) {
         "Product specific": productSpecificRow,
         "Question Mode": questionModeRow,
         "Question Type": questionTypeRow,
+        Type: typeRow,
         "Skill Level": skillLevelRow,
         "Source code": sourceCodeRow,
         "Source type": sourceTypeRow,
@@ -194,17 +196,18 @@ export default function CSVReader(props) {
         ...rest
       } = question;
       const qnsToSave = { ...rest };
-      qnsToSave.certRelated = certRelated;
+      qnsToSave.certRelated = certRelatedRow;
       qnsToSave.domain = DomainRow;
       qnsToSave.product = ProductRow;
       qnsToSave.fileName = csvFile.name;
-      qnsToSave.productSpecific = productSpecific;
-      qnsToSave.questionMode = questionMode;
-      qnsToSave.questionType = questionType;
-      qnsToSave.skillLevel = skillLevel;
-      qnsToSave.sourceCode = sourceCode;
-      qnsToSave.sourceType = sourceType;
-      qnsToSave.comments = comments;
+      qnsToSave.productSpecific = productSpecificRow;
+      qnsToSave.questionMode = questionModeRow;
+      qnsToSave.questionType = questionTypeRow;
+      qnsToSave.type = typeRow;
+      qnsToSave.skillLevel = skillLevelRow;
+      qnsToSave.sourceCode = sourceCodeRow;
+      qnsToSave.sourceType = sourceTypeRow;
+      qnsToSave.comments = commentsRow;
       qnsToSave.question = qnsToSave.Question;
       const optionsWithAnswers = [];
       console.log("qnsToSave", qnsToSave);
@@ -238,6 +241,7 @@ export default function CSVReader(props) {
     formData.append("questionType", questionType);
     formData.append("skillLevel", skillLevel);
     formData.append("sourceCode", sourceCode);
+    formData.append("type", type);
     formData.append("sourceType", sourceType);
     formData.append("comments", comments);
     try {
@@ -255,6 +259,16 @@ export default function CSVReader(props) {
             single: item.single,
             fileName: item.fileName,
             tags: item.Tags || [],
+            domain: item.domain,
+            product: item.product,
+            productSpecific: item.productSpecific,
+            questionMode: item.questionMode,
+            questionType: item.questionType,
+            type: item.type,
+            skillLevel: item.skillLevel,
+            sourceCode: item.sourceCode,
+            sourceType: item.sourceType,
+            comments: item.comments,
             fileUploadId: response.data.qnsUpload._id,
           };
         });
