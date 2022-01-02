@@ -7,6 +7,7 @@ export default function TalentProfileUpload(props) {
   // const { isheader, isSrNo, answerColumnIndex, headerProps } = props;
   const [csvFile, setCsvFile] = useState();
   const [headers, setHeaders] = useState([]);
+  const [secSkillUniqueJobs, setSecSkillUniqueJobs] = useState([]);
   const [csvArray, setCsvArray] = useState([]);
   const [stepsObject, setStepsObject] = useState({});
   // [{name: "", age: 0, rank: ""},{name: "", age: 0, rank: ""}]
@@ -17,11 +18,56 @@ export default function TalentProfileUpload(props) {
   };
 
   const processCSV = (hdrs, rows) => {
+    let uniqJobs = [...secSkillUniqueJobs];
     const newArray = rows.map((row) => {
+      let secSkill;
       const eachObject = hdrs.reduce((obj = {}, header, i) => {
-        if (i <= 3) {
+        if (i <= 5) {
           let value = row[i];
+          if (i === 1) {
+            secSkill = value;
+          }
+          if (header === "Jobs") {
+            let secSkillObj = uniqJobs.find(
+              (item) => item.secSkill === secSkill
+            );
+            value = value || "";
+            value = value.split(",");
+            value = value.map((v) => v.replace("\t", "").trim());
+            const res = [];
+            value.forEach((item) => {
+              if (!res.includes(item)) res.push(item);
+            });
+            value = res;
 
+            if (value.length > 0) {
+              if (secSkillObj) {
+                const res = [];
+                secSkillObj.jobs.forEach((item) => {
+                  if (!res.includes(item)) res.push(item);
+                });
+                secSkillObj.jobs = res;
+              } else {
+                secSkillObj = { secSkill, jobs: [...value] };
+              }
+            }
+            const founduniqueJob = uniqJobs.some(
+              (item) => item.secSkill === secSkill
+            );
+
+            if (!founduniqueJob) {
+              uniqJobs.push(secSkillObj);
+            }
+
+            uniqJobs = uniqJobs.map((item) => {
+              debugger;
+              if (item.secSkill === secSkill) {
+                return secSkillObj;
+              } else {
+                return item;
+              }
+            });
+          }
           if (header === "Top Products") {
             value = value.split(",");
             value = value.map((v) => v.trim());
@@ -32,12 +78,14 @@ export default function TalentProfileUpload(props) {
       }, {});
       return eachObject;
     });
+    setSecSkillUniqueJobs(uniqJobs);
+
     setCsvArray(newArray);
     const objFinal = {};
     rows.forEach((row) => {
       hdrs.forEach((header, i) => {
         // debugger;
-        if (i <= 3) {
+        if (i <= 5) {
           if (i === 0) {
             let value = row[0];
             // if (value !== null) debugger;
@@ -50,16 +98,20 @@ export default function TalentProfileUpload(props) {
             }
           }
           if (i === 1) {
+            const jobItem = uniqJobs.find((item) => item.secSkill === row[1]);
+            const obj = {};
+            if (jobItem) {
+              obj.jobs = jobItem.jobs;
+            }
             if (row[0] !== null) {
-              debugger;
               if (
                 !objFinal[row[0]][row[1]] ||
                 Object.keys(objFinal[row[0]]).length === 0
               ) {
-                objFinal[row[0]][row[1]] = {};
+                objFinal[row[0]][row[1]] = obj;
               }
             } else {
-              if (!objFinal[row[1]]) objFinal[row[1]] = {};
+              if (!objFinal[row[1]]) objFinal[row[1]] = obj;
             }
           }
           if (i === 2) {
@@ -101,6 +153,8 @@ export default function TalentProfileUpload(props) {
     setStepsObject(objFinal);
   };
   console.log("csvArray", csvArray);
+  console.log("secSkillUniqueJobs", secSkillUniqueJobs);
+  console.log("stepsObject", stepsObject);
   // console.log("sendArray", sendArray);
   const submit = async () => {
     const formData = new FormData();
