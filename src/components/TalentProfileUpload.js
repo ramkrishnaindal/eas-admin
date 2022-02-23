@@ -21,9 +21,9 @@ export default function TalentProfileUpload(props) {
     const newArray = rows.map((row) => {
       let module;
       const eachObject = hdrs.reduce((obj = {}, header, i) => {
-        if (i <= 3) {
+        if (i <= 4) {
           let value = row[i];
-          if (i === 2) {
+          if (i === 3) {
             module = value;
           }
           if (header.trim() === "Job roles") {
@@ -39,7 +39,7 @@ export default function TalentProfileUpload(props) {
           }
           if (header === "Product") {
             value = value.split(",");
-            value = value.map((v) => v.trim());
+            value = value.map((v) => ({name: v.trim(),imageUrl:''}));
           }
           obj[header] = value;
         }
@@ -53,11 +53,11 @@ export default function TalentProfileUpload(props) {
     rows.forEach((row) => {
       hdrs.forEach((header, i) => {
         // debugger;
-        if (i <= 3) {
-          if (i === 0) {
+        if (i <= 4) {
+          if (i === 1) {
             if (!objFinal[row[0]]) objFinal[row[0]] = {};
           }
-          if (i === 1) {
+          if (i === 2) {
             if (
               Object.keys(objFinal[row[0]]).length === 0 ||
               (objFinal[row[0]].keys && !objFinal[row[0]][row[1]])
@@ -68,7 +68,7 @@ export default function TalentProfileUpload(props) {
           if (header === "Product") {
             let value = row[i];
             value = value.split(",");
-            value = value.map((v) => v.trim());
+            value = value.map((v) => ({name: v.trim(),imageUrl:''}));
             debugger;
             if (objFinal[row[0]][row[1]])
               objFinal[row[0]][row[1]].Product = value;
@@ -178,7 +178,8 @@ export default function TalentProfileUpload(props) {
                       //       {item[headers[index]]}
                       //     </td>
                       //   );
-                      return index <= 3 ? (
+                      return index <= 4 ? (
+                        h==="Product"?<td>{item[headers[index]].map(it=>it.name)}</td>:
                         <td>{item[headers[index]]}</td>
                       ) : null;
                     })}
