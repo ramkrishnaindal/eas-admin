@@ -23,7 +23,7 @@ export default function TalentProfileUpload(props) {
       const eachObject = hdrs.reduce((obj = {}, header, i) => {
         if (i <= 4) {
           let value = row[i];
-          if (i === 3) {
+          if (i === 2) {
             module = value;
           }
           if (header.trim() === "Job roles") {
@@ -39,7 +39,7 @@ export default function TalentProfileUpload(props) {
           }
           if (header === "Product") {
             value = value.split(",");
-            value = value.map((v) => ({name: v.trim(),imageUrl:''}));
+            value = value.map((v) => ({ name: v.trim(), imageUrl: '' }));
           }
           obj[header] = value;
         }
@@ -50,38 +50,73 @@ export default function TalentProfileUpload(props) {
 
     setCsvArray(newArray);
     const objFinal = {};
-    rows.forEach((row) => {
-      hdrs.forEach((header, i) => {
-        // debugger;
-        if (i <= 4) {
-          if (i === 1) {
-            if (!objFinal[row[0]]) objFinal[row[0]] = {};
-          }
-          if (i === 2) {
-            if (
-              Object.keys(objFinal[row[0]]).length === 0 ||
-              (objFinal[row[0]].keys && !objFinal[row[0]][row[1]])
-            ) {
-              objFinal[row[0]][row[1]] = {};
-            }
-          }
-          if (header === "Product") {
-            let value = row[i];
-            value = value.split(",");
-            value = value.map((v) => ({name: v.trim(),imageUrl:''}));
-            debugger;
-            if (objFinal[row[0]][row[1]])
-              objFinal[row[0]][row[1]].Product = value;
-          }
-          if (header.trim() === "Job roles") {
-            let value = row[i] || "";
-            value = value.split(",");
-            value = value.map((v) => v.trim());
-            if (objFinal[row[0]][row[1]]) objFinal[row[0]][row[1]].Jobs = value;
+    newArray.forEach((item) => {
+
+      if (Object.keys(objFinal).length === 0 || !objFinal.hasOwnProperty([item["Role-Prefix and Product-Suffix"]]))
+        objFinal[item["Role-Prefix and Product-Suffix"]] = { ["Primary Domain"]: item["Primary Domain"], Modules: { [item["Modules"]]: { Product: item["Product"], ["Job roles"]: item["Job roles"] } } }
+      else {
+        objFinal[item["Role-Prefix and Product-Suffix"]]["Primary Domain"] = item["Primary Domain"]
+        if (Object.keys(objFinal[item["Role-Prefix and Product-Suffix"]]).length === 0 || !objFinal[item["Role-Prefix and Product-Suffix"]].hasOwnProperty("Modules")) {
+          objFinal[item["Role-Prefix and Product-Suffix"]]["Modules"] = { [item["Modules"]]: { Product: item["Product"], ["Job roles"]: item["Job roles"] } }
+        } else {
+          if (!objFinal[item["Role-Prefix and Product-Suffix"]]["Modules"].hasOwnProperty(item["Modules"])) {
+            objFinal[item["Role-Prefix and Product-Suffix"]]["Modules"][item["Modules"]] = { Product: item["Product"], ["Job roles"]: item["Job roles"] }
+          } else {
+            const newProd = item["Product"].filter(pr => objFinal[item["Role-Prefix and Product-Suffix"]]["Modules"][item["Modules"]].Product.some(p => p.name === pr.name))
+            objFinal[item["Role-Prefix and Product-Suffix"]]["Modules"][item["Modules"]].Product.push(newProd)
+
+            const newJobRoles = item["Job roles"].filter(jr => objFinal[item["Role-Prefix and Product-Suffix"]]["Modules"][item["Modules"]]["Job roles"].includes(jr))
           }
         }
-      });
-    });
+
+      }
+    })
+    console.log("objFinal", objFinal)
+    // objFinal = {};
+    // rows.forEach((row) => {
+    //   hdrs.forEach((header, i) => {
+    //     debugger;
+    //     if (i <= 4) {
+    //       if (i === 0) {
+    //         if (!objFinal[row[0]]) objFinal[row[0]] = {};
+    //       }
+    //       if (i === 1) {
+    //         if (
+    //           Object.keys(objFinal[row[0]]).length === 0
+    //           //  ||
+    //           // (objFinal[row[0]].keys && !objFinal[row[0]][row[1]])
+    //         ) {
+    //           objFinal[row[0]][row[1]] = {};
+    //         }
+    //       }
+    //       if (i === 2) {
+    //         if (objFinal[row[0]][row[1]]) {
+    //           if (
+    //             Object.keys(objFinal[row[0]][row[1]]).length === 0 ||
+    //             (objFinal[row[0]][row[1]].keys && !objFinal[row[0]][row[1]][row[2]])
+    //           ) {
+    //             objFinal[row[0]][row[1]][row[2]] = {};
+    //           }
+    //         }
+
+    //       }
+    //       if (header === "Product" && objFinal[row[0]][row[1]] && objFinal[row[0]][row[1]][row[2]]) {
+    //         let value = row[i];
+    //         value = value.split(",");
+    //         value = value.map((v) => ({ name: v.trim(), imageUrl: '' }));
+    //         debugger;
+    //         if (objFinal[row[0]][row[1]][row[2]])
+    //           objFinal[row[0]][row[1]][row[2]].Product = value;
+    //       }
+    //       if (header.trim() === "Job roles" && objFinal[row[0]][row[1]] && objFinal[row[0]][row[1]][row[2]]) {
+    //         let value = row[i] || "";
+    //         value = value.split(",");
+    //         value = value.map((v) => v.trim());
+    //         if (objFinal[row[0]][row[1]][row[2]]) objFinal[row[0]][row[1]][row[2]].Jobs = value;
+    //       }
+    //     }
+    //   });
+    // });
     setStepsObject(objFinal);
   };
   console.log("csvArray", csvArray);
@@ -98,7 +133,7 @@ export default function TalentProfileUpload(props) {
         formData
       );
       console.log("file upload", resp.data.talentProfileUpload);
-    } catch {}
+    } catch { }
   };
   const upload = () => {
     main();
@@ -179,8 +214,8 @@ export default function TalentProfileUpload(props) {
                       //     </td>
                       //   );
                       return index <= 4 ? (
-                        h==="Product"?<td>{item[headers[index]].map(it=>it.name)}</td>:
-                        <td>{item[headers[index]]}</td>
+                        h === "Product" ? <td>{item[headers[index]].map(it => it.name)}</td> :
+                          <td>{item[headers[index]]}</td>
                       ) : null;
                     })}
                   </tr>
