@@ -75,16 +75,16 @@ export default function EmployerProfileUpload(props) {
           "skill": "",
           "group": item["Primary Domain"]
         })
-        item["Product"].forEach(prod => {
-          products.push({
-            "value": prod.name,
-            "selected": false,
-            "disable": false,
-            "noOfYear": "",
-            "skill": "",
-            "group": item["Modules"]
-          })
-        })
+        // item["Product"].forEach(prod => {
+        //   products.push({
+        //     "value": prod.name,
+        //     "selected": false,
+        //     "disable": false,
+        //     "noOfYear": "",
+        //     "skill": "",
+        //     "group": item["Modules"]
+        //   })
+        // })
         item["Job roles"].forEach(jobrol => {
           jobRoles.push({
             "value": jobrol,
@@ -92,7 +92,8 @@ export default function EmployerProfileUpload(props) {
             "disable": false,
             "noOfYear": "",
             "skill": "",
-            "group": item["Modules"]
+            "subGroup": item["Modules"],
+            "group": item["Primary Domain"]
           })
         })
       }
@@ -108,16 +109,16 @@ export default function EmployerProfileUpload(props) {
             "skill": "",
             "group": item["Primary Domain"]
           })
-          item["Product"].forEach(prod => {
-            products.push({
-              "value": prod.name,
-              "selected": false,
-              "disable": false,
-              "noOfYear": "",
-              "skill": "",
-              "group": item["Modules"]
-            })
-          })
+          // item["Product"].forEach(prod => {
+          //   products.push({
+          //     "value": prod.name,
+          //     "selected": false,
+          //     "disable": false,
+          //     "noOfYear": "",
+          //     "skill": "",
+          //     "group": item["Modules"]
+          //   })
+          // })
           item["Job roles"].forEach(jobrol => {
             jobRoles.push({
               "value": jobrol,
@@ -125,7 +126,8 @@ export default function EmployerProfileUpload(props) {
               "disable": false,
               "noOfYear": "",
               "skill": "",
-              "group": item["Modules"]
+              "subGroup": item["Modules"],
+              "group": item["Primary Domain"]
             })
           })
         } else {
@@ -145,16 +147,16 @@ export default function EmployerProfileUpload(props) {
             "skill": "",
             "group": item["Primary Domain"]
           })
-          item["Product"].forEach(prod => {
-            products.push({
-              "value": prod.name,
-              "selected": false,
-              "disable": false,
-              "noOfYear": "",
-              "skill": "",
-              "group": item["Modules"]
-            })
-          })
+          // item["Product"].forEach(prod => {
+          //   products.push({
+          //     "value": prod.name,
+          //     "selected": false,
+          //     "disable": false,
+          //     "noOfYear": "",
+          //     "skill": "",
+          //     "group": item["Modules"]
+          //   })
+          // })
           item["Job roles"].forEach(jobrol => {
             jobRoles.push({
               "value": jobrol,
@@ -162,7 +164,8 @@ export default function EmployerProfileUpload(props) {
               "disable": false,
               "noOfYear": "",
               "skill": "",
-              "group": item["Modules"]
+              "subGroup": item["Modules"],
+              "group": item["Primary Domain"]
             })
           })
         }
@@ -174,7 +177,7 @@ export default function EmployerProfileUpload(props) {
     EmployerSteps[1].option = primaryDomain
     EmployerSteps[2].option = module
     EmployerSteps[3].option = jobRoles
-    EmployerSteps[5].option = products
+    // EmployerSteps[5].option = products
     console.log("EmployerSteps", EmployerSteps)
     // objFinal = {};
     // rows.forEach((row) => {
