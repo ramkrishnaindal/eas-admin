@@ -39,7 +39,7 @@ export default function TalentProfileUpload(props) {
           }
           if (header === "Product") {
             value = value.split(",");
-            value = value.map((v) => ({ name: v.trim(), imageUrl: '' }));
+            value = value.map((v) => ({ name: v.trim(), imageUrl: "" }));
           }
           obj[header] = value;
         }
@@ -51,27 +51,64 @@ export default function TalentProfileUpload(props) {
     setCsvArray(newArray);
     const objFinal = {};
     newArray.forEach((item) => {
-
-      if (Object.keys(objFinal).length === 0 || !objFinal.hasOwnProperty([item["Role-Prefix and Product-Suffix"]]))
-        objFinal[item["Role-Prefix and Product-Suffix"]] = { ["Primary Domain"]: item["Primary Domain"], Modules: { [item["Modules"]]: { Product: item["Product"], ["Job roles"]: item["Job roles"] } } }
+      if (
+        Object.keys(objFinal).length === 0 ||
+        !objFinal.hasOwnProperty([item["Role-Prefix and Product-Suffix"]])
+      )
+        objFinal[item["Role-Prefix and Product-Suffix"]] = {
+          ["Primary Domain"]: item["Primary Domain"],
+          Modules: {
+            [item["Modules"]]: {
+              Product: item["Product"],
+              ["Job roles"]: item["Job roles"],
+            },
+          },
+        };
       else {
-        objFinal[item["Role-Prefix and Product-Suffix"]]["Primary Domain"] = item["Primary Domain"]
-        if (Object.keys(objFinal[item["Role-Prefix and Product-Suffix"]]).length === 0 || !objFinal[item["Role-Prefix and Product-Suffix"]].hasOwnProperty("Modules")) {
-          objFinal[item["Role-Prefix and Product-Suffix"]]["Modules"] = { [item["Modules"]]: { Product: item["Product"], ["Job roles"]: item["Job roles"] } }
+        objFinal[item["Role-Prefix and Product-Suffix"]]["Primary Domain"] =
+          item["Primary Domain"];
+        if (
+          Object.keys(objFinal[item["Role-Prefix and Product-Suffix"]])
+            .length === 0 ||
+          !objFinal[item["Role-Prefix and Product-Suffix"]].hasOwnProperty(
+            "Modules"
+          )
+        ) {
+          objFinal[item["Role-Prefix and Product-Suffix"]]["Modules"] = {
+            [item["Modules"]]: {
+              Product: item["Product"],
+              ["Job roles"]: item["Job roles"],
+            },
+          };
         } else {
-          if (!objFinal[item["Role-Prefix and Product-Suffix"]]["Modules"].hasOwnProperty(item["Modules"])) {
-            objFinal[item["Role-Prefix and Product-Suffix"]]["Modules"][item["Modules"]] = { Product: item["Product"], ["Job roles"]: item["Job roles"] }
+          if (
+            !objFinal[item["Role-Prefix and Product-Suffix"]][
+              "Modules"
+            ].hasOwnProperty(item["Modules"])
+          ) {
+            objFinal[item["Role-Prefix and Product-Suffix"]]["Modules"][
+              item["Modules"]
+            ] = { Product: item["Product"], ["Job roles"]: item["Job roles"] };
           } else {
-            const newProd = item["Product"].filter(pr => objFinal[item["Role-Prefix and Product-Suffix"]]["Modules"][item["Modules"]].Product.some(p => p.name === pr.name))
-            objFinal[item["Role-Prefix and Product-Suffix"]]["Modules"][item["Modules"]].Product.push(newProd)
+            const newProd = item["Product"].filter((pr) =>
+              objFinal[item["Role-Prefix and Product-Suffix"]]["Modules"][
+                item["Modules"]
+              ].Product.some((p) => p.name === pr.name)
+            );
+            objFinal[item["Role-Prefix and Product-Suffix"]]["Modules"][
+              item["Modules"]
+            ].Product.push(newProd);
 
-            const newJobRoles = item["Job roles"].filter(jr => objFinal[item["Role-Prefix and Product-Suffix"]]["Modules"][item["Modules"]]["Job roles"].includes(jr))
+            const newJobRoles = item["Job roles"]?.filter((jr) =>
+              objFinal[item["Role-Prefix and Product-Suffix"]]["Modules"][
+                item["Modules"]
+              ]["Job roles"].includes(jr)
+            );
           }
         }
-
       }
-    })
-    console.log("objFinal", objFinal)
+    });
+    console.log("objFinal", objFinal);
     // objFinal = {};
     // rows.forEach((row) => {
     //   hdrs.forEach((header, i) => {
@@ -133,7 +170,7 @@ export default function TalentProfileUpload(props) {
         formData
       );
       console.log("file upload", resp.data.talentProfileUpload);
-    } catch { }
+    } catch {}
   };
   const upload = () => {
     main();
@@ -198,14 +235,14 @@ export default function TalentProfileUpload(props) {
             <thead>
               <tr className="question-header">
                 {headers.map((h, index) => {
-                  return <th key={index}>{h}</th>;
+                  return <th key={`${h}-${index}`}>{h}</th>;
                 })}
               </tr>
             </thead>
             <tbody>
               {csvArray.map((item, i) => {
                 return (
-                  <tr key={i}>
+                  <tr key={`${item}-${i}`}>
                     {headers.map((h, index) => {
                       // if (index === 0)
                       //   return (
@@ -214,8 +251,17 @@ export default function TalentProfileUpload(props) {
                       //     </td>
                       //   );
                       return index <= 4 ? (
-                        h === "Product" ? <td>{item[headers[index]].map(it => it.name)}</td> :
+                        h === "Product" ? (
+                          <td key={`${item}-${i}-${index}`}>
+                            {item[headers[index]].map((it, ind) => (
+                              <span key={`${item}-${i}-${index}-${it}-${ind}`}>
+                                {it.name}
+                              </span>
+                            ))}
+                          </td>
+                        ) : (
                           <td>{item[headers[index]]}</td>
+                        )
                       ) : null;
                     })}
                   </tr>
