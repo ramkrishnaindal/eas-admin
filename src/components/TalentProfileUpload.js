@@ -18,10 +18,11 @@ export default function TalentProfileUpload(props) {
 
   const processCSV = (hdrs, rows) => {
     // let uniqJobs = [...moduleUniqueJobs];
+    console.log("hdrs", hdrs);
     const newArray = rows.map((row) => {
       let module;
       const eachObject = hdrs.reduce((obj = {}, header, i) => {
-        if (i <= 4) {
+        if (i <= 5) {
           let value = row[i];
           if (i === 2) {
             module = value;
@@ -54,17 +55,18 @@ export default function TalentProfileUpload(props) {
       if (
         Object.keys(objFinal).length === 0 ||
         !objFinal.hasOwnProperty([item["Role-Prefix and Product-Suffix"]])
-      )
+      ) {
+        debugger;
         objFinal[item["Role-Prefix and Product-Suffix"]] = {
           ["Primary Domain"]: item["Primary Domain"],
           Modules: {
             [item["Modules"]]: {
               Product: item["Product"],
-              ["Job roles"]: item["Job roles"],
+              "Job roles": item["Job roles"],
             },
           },
         };
-      else {
+      } else {
         objFinal[item["Role-Prefix and Product-Suffix"]]["Primary Domain"] =
           item["Primary Domain"];
         if (
@@ -74,10 +76,11 @@ export default function TalentProfileUpload(props) {
             "Modules"
           )
         ) {
+          debugger;
           objFinal[item["Role-Prefix and Product-Suffix"]]["Modules"] = {
             [item["Modules"]]: {
               Product: item["Product"],
-              ["Job roles"]: item["Job roles"],
+              "Job roles": item["Job roles"],
             },
           };
         } else {
@@ -86,9 +89,10 @@ export default function TalentProfileUpload(props) {
               "Modules"
             ].hasOwnProperty(item["Modules"])
           ) {
+            // debugger;
             objFinal[item["Role-Prefix and Product-Suffix"]]["Modules"][
               item["Modules"]
-            ] = { Product: item["Product"], ["Job roles"]: item["Job roles"] };
+            ] = { Product: item["Product"], "Job roles": item["Job roles"] };
           } else {
             const newProd = item["Product"].filter((pr) =>
               objFinal[item["Role-Prefix and Product-Suffix"]]["Modules"][
@@ -98,7 +102,7 @@ export default function TalentProfileUpload(props) {
             objFinal[item["Role-Prefix and Product-Suffix"]]["Modules"][
               item["Modules"]
             ].Product.push(newProd);
-
+            // debugger;
             const newJobRoles = item["Job roles"]?.filter((jr) =>
               objFinal[item["Role-Prefix and Product-Suffix"]]["Modules"][
                 item["Modules"]
@@ -250,7 +254,7 @@ export default function TalentProfileUpload(props) {
                       //       {item[headers[index]]}
                       //     </td>
                       //   );
-                      return index <= 4 ? (
+                      return index <= 5 ? (
                         h === "Product" ? (
                           <td key={`${item}-${i}-${index}`}>
                             {item[headers[index]].map((it, ind) => (
