@@ -112,6 +112,38 @@ export default function TalentProfileUpload(props) {
         }
       }
     });
+
+    const keys = Object.keys(objFinal);
+    keys.forEach((key) => {
+      const modules = Object.keys(objFinal[key].Modules);
+      let allModuleKey,
+        products = [],
+        jobs = [];
+      modules.forEach((module, index) => {
+        if (module.includes("(All Modules)")) {
+          allModuleKey = module;
+        } else {
+          const currProducts = objFinal[key].Modules[module].Product;
+          const currJobs = objFinal[key].Modules[module]["Job roles"];
+          if (key === "PLM" && index === 23) return;
+          currProducts.forEach((currProduct) => {
+            const foundProduct = products.find((a) => currProduct.name);
+            if (!foundProduct) {
+              products.push(currProduct);
+            }
+          });
+          currJobs.forEach((currJob) => {
+            if (!jobs.includes(currJob)) {
+              jobs.push(currJob);
+            }
+          });
+        }
+      });
+      if (allModuleKey) {
+        objFinal[key].Modules[allModuleKey].Product = products;
+        objFinal[key].Modules[allModuleKey]["Job roles"] = jobs;
+      }
+    });
     console.log("objFinal", objFinal);
     // objFinal = {};
     // rows.forEach((row) => {
