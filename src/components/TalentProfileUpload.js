@@ -198,12 +198,19 @@ export default function TalentProfileUpload(props) {
   // console.log("sendArray", sendArray);
   const submit = async () => {
     const formData = new FormData();
+    const token = JSON.parse(localStorage.getItem("token"));
+    let header2 = {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    };
     formData.append("talentProfileFile", csvFile);
     formData.append("steps", JSON.stringify(stepsObject));
     try {
       const resp = await axios.post(
         `${process.env.REACT_APP_SERVER_URL}/api/talentProfile/setTalentProfileSteps`,
-        formData
+        formData,
+        header2
       );
       console.log("file upload", resp.data.talentProfileUpload);
     } catch {}

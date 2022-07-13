@@ -8,16 +8,24 @@ const UserRegistration = () => {
     email: "",
     company: "",
     password: "",
+    // verified: true,
     userRole: "admin",
   };
   const [stateObj, setStateObj] = useState(initialState);
   const submitHandler = async (e) => {
+    const token = JSON.parse(localStorage.getItem("token"));
     e.preventDefault();
     let resp;
+    let header2 = {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    };
     try {
       resp = await axios.post(
         `${process.env.REACT_APP_SERVER_URL}/api/users/createAdminPanelUser`,
-        stateObj
+        stateObj,
+        header2
       );
       console.log("User", resp.data.data);
       alert(
@@ -35,7 +43,7 @@ const UserRegistration = () => {
       return { ...prev };
     });
   };
-  console.log("stateObj", stateObj);
+  // console.log("stateObj", stateObj);
   return (
     <Container>
       <Row>

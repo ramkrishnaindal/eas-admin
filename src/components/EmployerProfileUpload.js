@@ -2,9 +2,8 @@ import { useState } from "react";
 import readXlsxFile from "read-excel-file";
 import axios from "axios";
 import { Table, Input, Container, Row, Col } from "reactstrap";
-import EmployerSteps from '../assets/employerquestion.json'
+import EmployerSteps from "../assets/employerquestion.json";
 export default function EmployerProfileUpload(props) {
-
   // const { isheader, isSrNo, answerColumnIndex, headerProps } = props;
   const [csvFile, setCsvFile] = useState();
   const [headers, setHeaders] = useState([]);
@@ -41,7 +40,7 @@ export default function EmployerProfileUpload(props) {
           }
           if (header === "Product") {
             value = value.split(",");
-            value = value.map((v) => ({ name: v.trim(), imageUrl: '' }));
+            value = value.map((v) => ({ name: v.trim(), imageUrl: "" }));
           }
           obj[header] = value;
         }
@@ -57,24 +56,34 @@ export default function EmployerProfileUpload(props) {
     let products = [];
     let jobRoles = [];
     newArray.forEach((item) => {
-
-      if (Object.keys(objFinal).length === 0 || !objFinal.hasOwnProperty([item["Role-Prefix and Product-Suffix"]])) {
-        objFinal[item["Role-Prefix and Product-Suffix"]] = { ["Primary Domain"]: item["Primary Domain"], Modules: { [item["Modules"]]: { Product: item["Product"], ["Job roles"]: item["Job roles"] } } };
+      if (
+        Object.keys(objFinal).length === 0 ||
+        !objFinal.hasOwnProperty([item["Role-Prefix and Product-Suffix"]])
+      ) {
+        objFinal[item["Role-Prefix and Product-Suffix"]] = {
+          ["Primary Domain"]: item["Primary Domain"],
+          Modules: {
+            [item["Modules"]]: {
+              Product: item["Product"],
+              ["Job roles"]: item["Job roles"],
+            },
+          },
+        };
         primaryDomain.push({
-          "value": item["Primary Domain"],
-          "selected": false,
-          "disable": false,
-          "noOfYear": "",
-          "skill": ""
-        })
+          value: item["Primary Domain"],
+          selected: false,
+          disable: false,
+          noOfYear: "",
+          skill: "",
+        });
         module.push({
-          "value": item["Modules"],
-          "selected": false,
-          "disable": false,
-          "noOfYear": "",
-          "skill": "",
-          "group": item["Primary Domain"]
-        })
+          value: item["Modules"],
+          selected: false,
+          disable: false,
+          noOfYear: "",
+          skill: "",
+          group: item["Primary Domain"],
+        });
         // item["Product"].forEach(prod => {
         //   products.push({
         //     "value": prod.name,
@@ -85,30 +94,41 @@ export default function EmployerProfileUpload(props) {
         //     "group": item["Modules"]
         //   })
         // })
-        item["Job roles"].forEach(jobrol => {
+        item["Job roles"].forEach((jobrol) => {
           jobRoles.push({
-            "value": jobrol,
-            "selected": false,
-            "disable": false,
-            "noOfYear": "",
-            "skill": "",
-            "subGroup": item["Modules"],
-            "group": item["Primary Domain"]
-          })
-        })
-      }
-      else {
-        objFinal[item["Role-Prefix and Product-Suffix"]]["Primary Domain"] = item["Primary Domain"]
-        if (Object.keys(objFinal[item["Role-Prefix and Product-Suffix"]]).length === 0 || !objFinal[item["Role-Prefix and Product-Suffix"]].hasOwnProperty("Modules")) {
-          objFinal[item["Role-Prefix and Product-Suffix"]]["Modules"] = { [item["Modules"]]: { Product: item["Product"], ["Job roles"]: item["Job roles"] } }
+            value: jobrol,
+            selected: false,
+            disable: false,
+            noOfYear: "",
+            skill: "",
+            subGroup: item["Modules"],
+            group: item["Primary Domain"],
+          });
+        });
+      } else {
+        objFinal[item["Role-Prefix and Product-Suffix"]]["Primary Domain"] =
+          item["Primary Domain"];
+        if (
+          Object.keys(objFinal[item["Role-Prefix and Product-Suffix"]])
+            .length === 0 ||
+          !objFinal[item["Role-Prefix and Product-Suffix"]].hasOwnProperty(
+            "Modules"
+          )
+        ) {
+          objFinal[item["Role-Prefix and Product-Suffix"]]["Modules"] = {
+            [item["Modules"]]: {
+              Product: item["Product"],
+              ["Job roles"]: item["Job roles"],
+            },
+          };
           module.push({
-            "value": item["Modules"],
-            "selected": false,
-            "disable": false,
-            "noOfYear": "",
-            "skill": "",
-            "group": item["Primary Domain"]
-          })
+            value: item["Modules"],
+            selected: false,
+            disable: false,
+            noOfYear: "",
+            skill: "",
+            group: item["Primary Domain"],
+          });
           // item["Product"].forEach(prod => {
           //   products.push({
           //     "value": prod.name,
@@ -119,34 +139,50 @@ export default function EmployerProfileUpload(props) {
           //     "group": item["Modules"]
           //   })
           // })
-          item["Job roles"].forEach(jobrol => {
+          item["Job roles"].forEach((jobrol) => {
             jobRoles.push({
-              "value": jobrol,
-              "selected": false,
-              "disable": false,
-              "noOfYear": "",
-              "skill": "",
-              "subGroup": item["Modules"],
-              "group": item["Primary Domain"]
-            })
-          })
+              value: jobrol,
+              selected: false,
+              disable: false,
+              noOfYear: "",
+              skill: "",
+              subGroup: item["Modules"],
+              group: item["Primary Domain"],
+            });
+          });
         } else {
-          if (!objFinal[item["Role-Prefix and Product-Suffix"]]["Modules"].hasOwnProperty(item["Modules"])) {
-            objFinal[item["Role-Prefix and Product-Suffix"]]["Modules"][item["Modules"]] = { Product: item["Product"], ["Job roles"]: item["Job roles"] }
+          if (
+            !objFinal[item["Role-Prefix and Product-Suffix"]][
+              "Modules"
+            ].hasOwnProperty(item["Modules"])
+          ) {
+            objFinal[item["Role-Prefix and Product-Suffix"]]["Modules"][
+              item["Modules"]
+            ] = { Product: item["Product"], ["Job roles"]: item["Job roles"] };
           } else {
-            const newProd = item["Product"].filter(pr => objFinal[item["Role-Prefix and Product-Suffix"]]["Modules"][item["Modules"]].Product.some(p => p.name === pr.name))
-            objFinal[item["Role-Prefix and Product-Suffix"]]["Modules"][item["Modules"]].Product.push(newProd)
+            const newProd = item["Product"].filter((pr) =>
+              objFinal[item["Role-Prefix and Product-Suffix"]]["Modules"][
+                item["Modules"]
+              ].Product.some((p) => p.name === pr.name)
+            );
+            objFinal[item["Role-Prefix and Product-Suffix"]]["Modules"][
+              item["Modules"]
+            ].Product.push(newProd);
 
-            const newJobRoles = item["Job roles"].filter(jr => objFinal[item["Role-Prefix and Product-Suffix"]]["Modules"][item["Modules"]]["Job roles"].includes(jr))
+            const newJobRoles = item["Job roles"].filter((jr) =>
+              objFinal[item["Role-Prefix and Product-Suffix"]]["Modules"][
+                item["Modules"]
+              ]["Job roles"].includes(jr)
+            );
           }
           module.push({
-            "value": item["Modules"],
-            "selected": false,
-            "disable": false,
-            "noOfYear": "",
-            "skill": "",
-            "group": item["Primary Domain"]
-          })
+            value: item["Modules"],
+            selected: false,
+            disable: false,
+            noOfYear: "",
+            skill: "",
+            group: item["Primary Domain"],
+          });
           // item["Product"].forEach(prod => {
           //   products.push({
           //     "value": prod.name,
@@ -157,28 +193,27 @@ export default function EmployerProfileUpload(props) {
           //     "group": item["Modules"]
           //   })
           // })
-          item["Job roles"].forEach(jobrol => {
+          item["Job roles"].forEach((jobrol) => {
             jobRoles.push({
-              "value": jobrol,
-              "selected": false,
-              "disable": false,
-              "noOfYear": "",
-              "skill": "",
-              "subGroup": item["Modules"],
-              "group": item["Primary Domain"]
-            })
-          })
+              value: jobrol,
+              selected: false,
+              disable: false,
+              noOfYear: "",
+              skill: "",
+              subGroup: item["Modules"],
+              group: item["Primary Domain"],
+            });
+          });
         }
-
       }
-    })
-    console.log("objFinal", objFinal)
+    });
+    console.log("objFinal", objFinal);
 
-    EmployerSteps[1].option = primaryDomain
-    EmployerSteps[2].option = module
-    EmployerSteps[3].option = jobRoles
+    EmployerSteps[1].option = primaryDomain;
+    EmployerSteps[2].option = module;
+    EmployerSteps[3].option = jobRoles;
     // EmployerSteps[5].option = products
-    console.log("EmployerSteps", EmployerSteps)
+    console.log("EmployerSteps", EmployerSteps);
     // objFinal = {};
     // rows.forEach((row) => {
     //   hdrs.forEach((header, i) => {
@@ -232,15 +267,22 @@ export default function EmployerProfileUpload(props) {
   // console.log("sendArray", sendArray);
   const submit = async () => {
     const formData = new FormData();
+    const token = JSON.parse(localStorage.getItem("token"));
+    let header2 = {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    };
     formData.append("employerProfileFile", csvFile);
     formData.append("steps", JSON.stringify(stepsObject));
     try {
       const resp = await axios.post(
         `${process.env.REACT_APP_SERVER_URL}/api/employerProfile/setEmployerProfileSteps`,
-        formData
+        formData,
+        header2
       );
       console.log("file upload", resp.data.talentProfileUpload);
-    } catch { }
+    } catch {}
   };
   const upload = () => {
     main();
@@ -321,8 +363,11 @@ export default function EmployerProfileUpload(props) {
                       //     </td>
                       //   );
                       return index <= 4 ? (
-                        h === "Product" ? <td>{item[headers[index]].map(it => it.name)}</td> :
+                        h === "Product" ? (
+                          <td>{item[headers[index]].map((it) => it.name)}</td>
+                        ) : (
                           <td>{item[headers[index]]}</td>
+                        )
                       ) : null;
                     })}
                   </tr>

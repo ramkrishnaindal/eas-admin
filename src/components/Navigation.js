@@ -31,7 +31,7 @@ const Navigation = () => {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav">
+          <ul className="navbar-nav w-100">
             <li className="nav-item">
               {/* <a className="nav-link" href="#"> */}
               <NavLink
@@ -114,6 +114,25 @@ const Navigation = () => {
               </NavLink>
               {/* <Link className="nav-link" to="/employer">
                 Employer
+              </Link> */}
+              {/* </a> */}
+            </li>
+            <li className="nav-item flex-grow-1 d-flex justify-content-end">
+              {/* <a className="nav-link" href="#"> */}
+              <button
+                type="button"
+                className="btn btn-light btn-sm ml-auto"
+                style={{ minWidth: "100px" }}
+                onClick={() => {
+                  localStorage.removeItem("token");
+                  localStorage.removeItem("user");
+                  window.location.href = "/";
+                }}
+              >
+                Log off
+              </button>
+              {/* <Link className="nav-link" to="/question">
+                Questions
               </Link> */}
               {/* </a> */}
             </li>
