@@ -52,6 +52,40 @@ const Navigation = () => {
             <li className="nav-item">
               {/* <a className="nav-link" href="#"> */}
               <NavLink
+                to="/createUser"
+                className="nav-link"
+                style={({ isActive }) => {
+                  console.log("active", isActive);
+                  return isActive ? activeStyle : inactiveStyle;
+                }}
+              >
+                Create user
+              </NavLink>
+              {/* <Link className="nav-link" to="/question">
+                Questions
+              </Link> */}
+              {/* </a> */}
+            </li>
+            <li className="nav-item">
+              {/* <a className="nav-link" href="#"> */}
+              <NavLink
+                to="/createAdmin"
+                className="nav-link"
+                style={({ isActive }) => {
+                  console.log("active", isActive);
+                  return isActive ? activeStyle : inactiveStyle;
+                }}
+              >
+                Create Administrator
+              </NavLink>
+              {/* <Link className="nav-link" to="/question">
+                Questions
+              </Link> */}
+              {/* </a> */}
+            </li>
+            <li className="nav-item">
+              {/* <a className="nav-link" href="#"> */}
+              <NavLink
                 to="/talent"
                 className="nav-link"
                 style={({ isActive }) => {
