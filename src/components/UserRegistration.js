@@ -154,6 +154,27 @@ const UserRegistration = () => {
                   />
                 </FormGroup>
               </Col>
+              <Col xs={6}>
+                <FormGroup className="d-flex flex-column items-start">
+                  <Label
+                    for="userRole"
+                    className="px-2"
+                    style={{ textAlign: "left" }}
+                  >
+                    Role
+                  </Label>
+                  <Input
+                    type={"select"}
+                    // size="2"
+                    name="userRole"
+                    value={stateObj?.userRole}
+                    onChange={onChange}
+                  >
+                    <option value={"freelancer"}>Talent</option>
+                    <option value={"employer"}>Employer</option>
+                  </Input>
+                </FormGroup>
+              </Col>
             </Row>
             <button
               type="submit"
