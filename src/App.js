@@ -65,7 +65,7 @@ function App() {
   return (
     <div className="App">
       <Navigation />
-      <Routes basename="/eas-admin">
+      <Routes>
         <Route path="/" element={<div></div>} />
         <Route path="/login" el ement={<Login />} />
         <Route path="/createUser" element={<UserRegistration />} />
