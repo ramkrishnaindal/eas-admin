@@ -25,7 +25,7 @@ const Login = () => {
         JSON.stringify(resp.data.result.user.token)
       );
       alert(resp.data.message);
-      window.location.href = "../";
+      window.location.href = window.location.href;
       // setStateObj(initialState);
     } catch (e) {
       debugger;
