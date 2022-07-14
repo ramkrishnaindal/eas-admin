@@ -66,6 +66,7 @@ const Navigation = () => {
               </Link> */}
               {/* </a> */}
             </li>
+
             <li className="nav-item">
               {/* <a className="nav-link" href="#"> */}
               <NavLink
@@ -77,6 +78,23 @@ const Navigation = () => {
                 }}
               >
                 Create Administrator
+              </NavLink>
+              {/* <Link className="nav-link" to="/question">
+                Questions
+              </Link> */}
+              {/* </a> */}
+            </li>
+            <li className="nav-item">
+              {/* <a className="nav-link" href="#"> */}
+              <NavLink
+                to="/manageUser"
+                className="nav-link"
+                style={({ isActive }) => {
+                  console.log("active", isActive);
+                  return isActive ? activeStyle : inactiveStyle;
+                }}
+              >
+                User management
               </NavLink>
               {/* <Link className="nav-link" to="/question">
                 Questions

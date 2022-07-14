@@ -5,6 +5,7 @@ import EmployerProfileUpload from "./components/EmployerProfileUpload";
 import Navigation from "./components/Navigation";
 import UserRegistration from "./components/UserRegistration";
 import AdminUserRegistration from "./components/AdminUserRegistration";
+import UsersManagement from "./components/UsersManagement";
 import Login from "./components/Login";
 import axios from "axios";
 import "./App.css";
@@ -70,6 +71,7 @@ function App() {
         <Route path="/login" el ement={<Login />} />
         <Route path="/createUser" element={<UserRegistration />} />
         <Route path="/createAdmin" element={<AdminUserRegistration />} />
+        <Route path="/manageUser" element={<UsersManagement />} />
         <Route path="/employer" element={<EmployerProfileUpload />} />
         <Route path="/talent" element={<TalentProfileUpload />} />
         <Route path="/question" element={<QuestionAnswersCSVUpload />} />
