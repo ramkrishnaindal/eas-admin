@@ -15,9 +15,17 @@ import { Routes, Route, Link } from "react-router-dom";
 console.log("REACT_APP_SERVER_URL", process.env.REACT_APP_SERVER_URL);
 function App() {
   const [isValid, setIsValid] = useState(false);
+  let userName = "";
+  const userStr = localStorage.getItem("user");
+  if (userStr) {
+    userName = `${JSON.parse(userStr).firstName} ${
+      JSON.parse(userStr).lastName
+    }`;
+  }
   const checkLogin = async () => {
     const promise = new Promise(async (resolve, reject) => {
       const token = JSON.parse(localStorage.getItem("token"));
+
       debugger;
       if (!token) {
         reject({ message: "token not found" });
@@ -65,7 +73,7 @@ function App() {
   }
   return (
     <div className="App">
-      <Navigation />
+      <Navigation userName={userName} />
       <Routes>
         <Route path="/" element={<div></div>} />
         <Route path="/login" el ement={<Login />} />

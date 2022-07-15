@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink, Link } from "react-router-dom";
-const Navigation = () => {
+const Navigation = (props) => {
   let activeStyle = {
     textDecoration: "none",
     color: "rgba(0,0,0,1)",
@@ -137,6 +137,11 @@ const Navigation = () => {
             </li>
             <li className="nav-item flex-grow-1 d-flex justify-content-end">
               {/* <a className="nav-link" href="#"> */}
+              <p className="mx-3 text-dark" style={{ margin: "auto 0" }}>
+                <pre
+                  style={{ margin: "auto 0" }}
+                >{`Welcome  ${props.userName}`}</pre>
+              </p>
               <button
                 type="button"
                 className="btn btn-light btn-sm ml-auto"
