@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/eas-admin/static/css/main.7bddcb1d.css",
-    "main.js": "/eas-admin/static/js/main.82f45e7b.js",
+    "main.js": "/eas-admin/static/js/main.becc1672.js",
     "index.html": "/eas-admin/index.html",
     "main.7bddcb1d.css.map": "/eas-admin/static/css/main.7bddcb1d.css.map",
-    "main.82f45e7b.js.map": "/eas-admin/static/js/main.82f45e7b.js.map"
+    "main.becc1672.js.map": "/eas-admin/static/js/main.becc1672.js.map"
   },
   "entrypoints": [
     "static/css/main.7bddcb1d.css",
-    "static/js/main.82f45e7b.js"
+    "static/js/main.becc1672.js"
   ]
 }
