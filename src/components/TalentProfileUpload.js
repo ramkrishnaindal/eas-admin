@@ -21,13 +21,15 @@ export default function TalentProfileUpload(props) {
     console.log("hdrs", hdrs);
     const newArray = rows.map((row) => {
       let module;
+      // debugger;
       const eachObject = hdrs.reduce((obj = {}, header, i) => {
-        if (i <= 5) {
+        if (i <= 6) {
           let value = row[i];
           if (i === 2) {
             module = value;
+            // x;
           }
-          if (header.trim() === "Job roles") {
+          if (header?.trim() === "Job roles") {
             // let moduleObj = uniqJobs.find((item) => item.module === module);
             value = value || "";
             value = value.split(",");
@@ -48,15 +50,18 @@ export default function TalentProfileUpload(props) {
       }, {});
       return eachObject;
     });
-
+    // debugger;
     setCsvArray(newArray);
     const objFinal = {};
     newArray.forEach((item) => {
+      // if (item["Short_Name"]) {
+      //   debugger;
+      // }
       if (
         Object.keys(objFinal).length === 0 ||
         !objFinal.hasOwnProperty([item["Role-Prefix and Product-Suffix"]])
       ) {
-        debugger;
+        // debugger;
         objFinal[item["Role-Prefix and Product-Suffix"]] = {
           ["Primary Domain"]: item["Primary Domain"],
           Modules: {
@@ -65,6 +70,8 @@ export default function TalentProfileUpload(props) {
               "Job roles": item["Job roles"],
             },
           },
+          Services: item["Services"].split(",") || [],
+          ["Short_Name"]: item["Short_Name"],
         };
       } else {
         objFinal[item["Role-Prefix and Product-Suffix"]]["Primary Domain"] =
@@ -82,6 +89,8 @@ export default function TalentProfileUpload(props) {
               Product: item["Product"],
               "Job roles": item["Job roles"],
             },
+            Services: item["Services"] || [],
+            ["Short_Name"]: item["Short_Name"],
           };
         } else {
           if (
