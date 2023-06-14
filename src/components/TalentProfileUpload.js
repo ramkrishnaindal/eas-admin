@@ -59,10 +59,10 @@ export default function TalentProfileUpload(props) {
       // }
       if (
         Object.keys(objFinal).length === 0 ||
-        !objFinal.hasOwnProperty([item["Role-Prefix and Product-Suffix"]])
+        !objFinal.hasOwnProperty([item["Short_Name"]])
       ) {
         // debugger;
-        objFinal[item["Role-Prefix and Product-Suffix"]] = {
+        objFinal[item["Short_Name"]] = {
           ["Primary Domain"]: item["Primary Domain"],
           Modules: {
             [item["Modules"]]: {
@@ -71,51 +71,50 @@ export default function TalentProfileUpload(props) {
             },
           },
           Services: item["Services"].split(",") || [],
-          ["Short_Name"]: item["Short_Name"],
+          ["Role-Prefix and Product-Suffix"]:
+            item["Role-Prefix and Product-Suffix"],
         };
       } else {
-        objFinal[item["Role-Prefix and Product-Suffix"]]["Primary Domain"] =
-          item["Primary Domain"];
+        objFinal[item["Short_Name"]]["Primary Domain"] = item["Primary Domain"];
         if (
-          Object.keys(objFinal[item["Role-Prefix and Product-Suffix"]])
-            .length === 0 ||
-          !objFinal[item["Role-Prefix and Product-Suffix"]].hasOwnProperty(
-            "Modules"
-          )
+          Object.keys(objFinal[item["Short_Name"]]).length === 0 ||
+          !objFinal[item["Short_Name"]].hasOwnProperty("Modules")
         ) {
           debugger;
-          objFinal[item["Role-Prefix and Product-Suffix"]]["Modules"] = {
+          objFinal[item["Short_Name"]]["Modules"] = {
             [item["Modules"]]: {
               Product: item["Product"],
               "Job roles": item["Job roles"],
             },
             Services: item["Services"] || [],
-            ["Short_Name"]: item["Short_Name"],
+            ["Role-Prefix and Product-Suffix"]:
+              item["Role-Prefix and Product-Suffix"],
           };
         } else {
           if (
-            !objFinal[item["Role-Prefix and Product-Suffix"]][
-              "Modules"
-            ].hasOwnProperty(item["Modules"])
+            !objFinal[item["Short_Name"]]["Modules"].hasOwnProperty(
+              item["Modules"]
+            )
           ) {
             // debugger;
-            objFinal[item["Role-Prefix and Product-Suffix"]]["Modules"][
-              item["Modules"]
-            ] = { Product: item["Product"], "Job roles": item["Job roles"] };
+            objFinal[item["Short_Name"]]["Modules"][item["Modules"]] = {
+              Product: item["Product"],
+              "Job roles": item["Job roles"],
+            };
           } else {
             const newProd = item["Product"].filter((pr) =>
-              objFinal[item["Role-Prefix and Product-Suffix"]]["Modules"][
+              objFinal[item["Short_Name"]]["Modules"][
                 item["Modules"]
               ].Product.some((p) => p.name === pr.name)
             );
-            objFinal[item["Role-Prefix and Product-Suffix"]]["Modules"][
+            objFinal[item["Short_Name"]]["Modules"][
               item["Modules"]
             ].Product.push(newProd);
             // debugger;
             const newJobRoles = item["Job roles"]?.filter((jr) =>
-              objFinal[item["Role-Prefix and Product-Suffix"]]["Modules"][
-                item["Modules"]
-              ]["Job roles"].includes(jr)
+              objFinal[item["Short_Name"]]["Modules"][item["Modules"]][
+                "Job roles"
+              ].includes(jr)
             );
           }
         }
