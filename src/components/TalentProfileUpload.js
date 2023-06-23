@@ -23,7 +23,7 @@ export default function TalentProfileUpload(props) {
       let module;
       // debugger;
       const eachObject = hdrs.reduce((obj = {}, header, i) => {
-        if (i <= 6) {
+        if (i <= 8) {
           let value = row[i];
           if (i === 2) {
             module = value;
@@ -73,6 +73,8 @@ export default function TalentProfileUpload(props) {
           Services: item["Services"].split(",") || [],
           ["Role-Prefix and Product-Suffix"]:
             item["Role-Prefix and Product-Suffix"],
+          Icon: item["Icon"]?.toLowerCase().trim() === "yes" ? true : false,
+          Roles: item["Roles"]?.toLowerCase().trim() === "yes" ? true : false,
         };
       } else {
         objFinal[item["Short_Name"]]["Primary Domain"] = item["Primary Domain"];
@@ -89,6 +91,8 @@ export default function TalentProfileUpload(props) {
             Services: item["Services"] || [],
             ["Role-Prefix and Product-Suffix"]:
               item["Role-Prefix and Product-Suffix"],
+            Icon: item["Icon"]?.toLowerCase().trim() === "yes" ? true : false,
+            Roles: item["Roles"]?.toLowerCase().trim() === "yes" ? true : false,
           };
         } else {
           if (
@@ -301,7 +305,7 @@ export default function TalentProfileUpload(props) {
                       //       {item[headers[index]]}
                       //     </td>
                       //   );
-                      return index <= 5 ? (
+                      return index <= 8 ? (
                         h === "Product" ? (
                           <td key={`${item}-${i}-${index}`}>
                             {item[headers[index]].map((it, ind) => (
