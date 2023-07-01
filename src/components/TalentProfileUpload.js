@@ -1,13 +1,19 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import readXlsxFile from "read-excel-file";
 import axios from "axios";
 import { Table, Input, Container, Row, Col } from "reactstrap";
 export default function TalentProfileUpload(props) {
   // const { isheader, isSrNo, answerColumnIndex, headerProps } = props;
   const [csvFile, setCsvFile] = useState();
+  const [csvFileProductProperties, setCsvFileProductProperties] = useState();
   const [headers, setHeaders] = useState([]);
+  const [headersProductProperties, setHeadersProductProperties] = useState([]);
 
   const [csvArray, setCsvArray] = useState([]);
+  const [csvArrayProductProperties, setCsvArrayProductProperties] = useState(
+    {}
+  );
+
   const [stepsObject, setStepsObject] = useState({});
   // [{name: "", age: 0, rank: ""},{name: "", age: 0, rank: ""}]
   const main = async () => {
@@ -15,7 +21,54 @@ export default function TalentProfileUpload(props) {
     setHeaders(rows[0]);
     processCSV(rows[0], rows.slice(1));
   };
-
+  useEffect(() => {
+    debugger;
+    if (
+      Object.keys(csvArrayProductProperties).length !== 0 &&
+      Object.keys(stepsObject).length > 0
+    ) {
+      debugger;
+      const prevStepsObject = { ...stepsObject };
+      Object.keys(csvArrayProductProperties).forEach((key) => {
+        prevStepsObject[key].Properties = csvArrayProductProperties[key];
+      });
+      setStepsObject(prevStepsObject);
+    }
+  }, [csvArrayProductProperties]);
+  const mainProductProperties = async () => {
+    debugger;
+    const rows = await readXlsxFile(csvFileProductProperties);
+    setHeadersProductProperties(rows[0]);
+    processProductProperties(rows[0], rows.slice(1));
+  };
+  const processProductProperties = (hdrs, rows) => {
+    const obj = {};
+    rows.forEach((row) => {
+      if (Object.keys(obj).includes(row[0])) {
+        if (Object.keys(obj[row[0]]).includes(row[1])) {
+          if (Object.keys(obj[row[0]][row[1]]).includes(row[2])) {
+          } else {
+            obj[row[0]][row[1]][row[2]] = row[3]
+              .split(",")
+              .map((i) => i.trim());
+          }
+        } else {
+          obj[row[0]][row[1]] = {
+            [row[2]]: row[3].split(","),
+          };
+        }
+      } else {
+        obj[row[0]] = {
+          [row[1]]: {
+            [row[2]]: row[3].split(","),
+          },
+        };
+      }
+    });
+    debugger;
+    console.log("obj", obj);
+    setCsvArrayProductProperties(obj);
+  };
   const processCSV = (hdrs, rows) => {
     // let uniqJobs = [...moduleUniqueJobs];
     console.log("hdrs", hdrs);
@@ -230,10 +283,22 @@ export default function TalentProfileUpload(props) {
   const upload = () => {
     main();
   };
+  const uploadProductProperties = () => {
+    mainProductProperties();
+  };
   return (
     <>
       <form id="csv-form" className="col-xs-9">
         <Container className="mt-5">
+          <Row className="justify-content-start mb-3">
+            <Col
+              xs={4}
+              style={{ textAlign: "left", marginLeft: 50 }}
+              className="text-align-left ml-5 pl-5"
+            >
+              Upload talent details
+            </Col>
+          </Row>
           <Row className="justify-content-center mb-3">
             <Col sm={10}>
               <Input
@@ -248,6 +313,7 @@ export default function TalentProfileUpload(props) {
                   setCsvFile(e.target.files[0]);
                 }}
               />
+
               {/* <input
         type="file"
       ></input> */}
@@ -265,21 +331,62 @@ export default function TalentProfileUpload(props) {
               </button>
             </Col>
           </Row>
-          {csvArray.length > 0 && (
-            <Row className="justify-content-center mb-3">
-              <Col xs={1}>
-                <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    submit();
-                  }}
-                  style={{ padding: "5px" }}
-                >
-                  Submit
-                </button>
-              </Col>
-            </Row>
-          )}
+          <Row className="justify-content-start mb-3">
+            <Col
+              xs={4}
+              style={{ textAlign: "left", marginLeft: 50 }}
+              className="text-align-left ml-5 pl-5"
+            >
+              Upload the properties for Products
+            </Col>
+          </Row>
+          <Row className="justify-content-center mb-3">
+            <Col sm={10}>
+              <Input
+                name="file"
+                type="file"
+                accept=".xlsx"
+                onClick={(e) => {
+                  setCsvArrayProductProperties([]);
+                }}
+                onChange={(e) => {
+                  setCsvFileProductProperties(e.target.files[0]);
+                }}
+              />
+              {/* <input
+        type="file"
+      ></input> */}
+              {/* <br /> */}
+            </Col>
+
+            <Col sm={"auto"} className="p-0">
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (csvFileProductProperties) uploadProductProperties();
+                }}
+                style={{ padding: "5px" }}
+              >
+                Upload Excel
+              </button>
+            </Col>
+          </Row>
+          {csvArray.length > 0 &&
+            Object.keys(csvArrayProductProperties).length !== 0 && (
+              <Row className="justify-content-center mb-3">
+                <Col xs={1}>
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      submit();
+                    }}
+                    style={{ padding: "5px" }}
+                  >
+                    Submit
+                  </button>
+                </Col>
+              </Row>
+            )}
         </Container>
       </form>
       <br />
