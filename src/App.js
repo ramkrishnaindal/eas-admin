@@ -7,13 +7,16 @@ import UserRegistration from "./components/UserRegistration";
 import AdminUserRegistration from "./components/AdminUserRegistration";
 import UsersManagement from "./components/UsersManagement";
 import Login from "./components/Login";
+
 import axios from "axios";
 import "./App.css";
 import { Routes, Route, Link } from "react-router-dom";
+import { toast } from "react-toastify";
 // import "bootstrap/dist/js/bootstrap.bundle";
 // import "bootstrap/dist/css/bootstrap.css";
 console.log("REACT_APP_SERVER_URL", process.env.REACT_APP_SERVER_URL);
 function App() {
+  // toast.info("test");
   const [isValid, setIsValid] = useState(false);
   let userName = "";
   const userStr = localStorage.getItem("user");
@@ -23,34 +26,34 @@ function App() {
     }`;
   }
   const checkLogin = async () => {
-    const promise = new Promise(async (resolve, reject) => {
-      const token = JSON.parse(localStorage.getItem("token"));
+    // const promise = new Promise(async (resolve, reject) => {
+    const token = JSON.parse(localStorage.getItem("token"));
 
-      debugger;
-      if (!token) {
-        reject({ message: "token not found" });
-        return;
-      }
-      let header2 = {
-        headers: {
-          Authorization: "Bearer " + token,
-        },
-      };
-      try {
-        const resp = await axios.post(
-          `${process.env.REACT_APP_SERVER_URL}/api/users/checkToken`,
-          {},
-          header2
-        );
-        resolve({ message: "token valid" });
-        //   setStateObj(initialState);
-      } catch (e) {
-        alert(e.response.data.message);
-        reject({ message: "token validation failes" });
-        return;
-      }
-    });
-    return promise;
+    debugger;
+    if (!token) {
+      throw new Error("token not found");
+      // return;
+    }
+    let header2 = {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    };
+    try {
+      const resp = await axios.post(
+        `${process.env.REACT_APP_SERVER_URL}/api/users/checkToken`,
+        {},
+        header2
+      );
+      return { message: "token valid" };
+      //   setStateObj(initialState);
+    } catch (e) {
+      alert(e.response.data.message);
+      throw new Error("token not found");
+      // return;
+    }
+    // });
+    // return promise;
   };
   useEffect(() => {
     const checkValidity = async () => {
@@ -75,7 +78,7 @@ function App() {
     <div className="App">
       <Navigation userName={userName} />
       <Routes>
-        <Route path="/" element={<div></div>} />
+        <Route path="/" element={isValid ? <div></div> : <Login />} />
         <Route path="/login" el ement={<Login />} />
         <Route path="/createUser" element={<UserRegistration />} />
         <Route path="/createAdmin" element={<AdminUserRegistration />} />

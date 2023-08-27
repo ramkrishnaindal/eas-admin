@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Container, Row, Col, Form, FormGroup, Label, Input } from "reactstrap";
+import { toast } from "react-toastify";
 const Login = () => {
   const initialState = {
     email: "",
@@ -17,7 +18,8 @@ const Login = () => {
       );
       console.log("result", resp.data.message);
       if (resp.data.result.user.role !== "admin") {
-        alert(`You need to be an administrator to login to this portal`);
+        toast.error("You need to be an administrator");
+        return;
       }
       localStorage.setItem("user", JSON.stringify(resp.data.result.user));
       localStorage.setItem(

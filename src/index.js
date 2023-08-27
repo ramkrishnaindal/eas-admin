@@ -6,10 +6,13 @@ import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.bundle";
 import { BrowserRouter } from "react-router-dom";
 // import reportWebVitals from './reportWebVitals';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 ReactDOM.render(
   <BrowserRouter basename="/eas-admin">
     <App />
+    <ToastContainer />
   </BrowserRouter>,
 
   document.getElementById("root")

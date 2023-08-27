@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import readXlsxFile from "read-excel-file";
 import axios from "axios";
+import { toast } from "react-toastify";
 import { Table, Input, Container, Row, Col } from "reactstrap";
 export default function TalentProfileUpload(props) {
   // const { isheader, isSrNo, answerColumnIndex, headerProps } = props;
@@ -274,11 +275,15 @@ export default function TalentProfileUpload(props) {
     try {
       const resp = await axios.post(
         `${process.env.REACT_APP_SERVER_URL}/api/talentProfile/setTalentProfileSteps`,
-        formData,
-        header2
+        formData
+        // ,
+        // header2
       );
       console.log("file upload", resp.data.talentProfileUpload);
-    } catch {}
+      toast.info(resp.data?.message);
+    } catch (err) {
+      toast.error("Error :" + JSON.stringify(err));
+    }
   };
   const upload = () => {
     main();
